@@ -12,7 +12,6 @@
 \section{Technische Umsetzung}
 
 \subsection{Detektion des Propellerblattes}
-\todo{auf Propeller oder Prpellerblatt einigen}
 Um neben einer Umwuchtdetektion auch eine Umwuchtlokalisierung zu ermöglichen, ist die Detektion mindestens eines Propellerblattes zwingend notwendig.
 Zwingend notwendig ist dies, da der Arduino für die lokalisierung der Unwucht die Unwuchtmessung jeweils pro vollständiger Umdrehung ($360^\circ$ Umdrehung) des Propellers starten muss.
 Durch die Detektion beider Propellerblätter würden sich Vorteile bei der Zuordnung der Messergebnisse der Unwucht ergeben. 
@@ -31,7 +30,7 @@ Beiden Lösungen liegt jedoch die gleiche theoretische Vorgehensweise zugrunde:
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=.9\textwidth]{chapter/03/propeller_detektion.jpg}
-	\caption{Modifikation zur Detektion eines Propellers}
+	\caption{Modifikation zur Detektion eines Propellerblattes}
 	\label{fig:propeller_detektion}
 \end{figure}
 Wie in Abbildung \ref{fig:propeller_detektion} erkennbar ist, gestaltet sich die Detektion des zweiten Propellerblattes als schwierig. 
@@ -40,12 +39,12 @@ Dies würde jedoch dazu führen, dass bei laufendem Motor zwar zwischen beiden P
 Denn selbst die Unterscheidung der Propellerblätter bei laufendem Motor nicht sehr zuverlässlich.
 Kommt es beispielsweise zu einem Messfehler - bedingt durch Lichteinflüsse oder änlichem - kann es passieren, dass ein Propellerblatt nicht erkannt respektive übersprungen wird.
 Wird die Messung mit nur einm bemalten bzw. beklebten Propellerblatt durhgeführt und durch einen Messfehler nicht erkannt, ist die Messung bis zur nächsten Detektion prinzipiell falsch, kann aber später als Ausreiser ignoriert werden.
-Werden jedoch beide Seiten bemalt bzw. beklebt und eine der beiden Seiten wird übersprungen, verschiebt sich die Position des Propellers für die restliche Messung.
+Werden jedoch beide Seiten bemalt bzw. beklebt und eine der beiden Seiten wird übersprungen, verschiebt sich die Position des Propellerblattes für die restliche Messung.
 Dies würde zu einem vollkommen falschen Merrergebnis führen.
 Falsche Werte könnten nicht mehr als Ausreiser aussortiert werden, da diese ab dem Zeitpunkt des Messfehlers bis zum Zeitpunkt des nächsten Messfehlers bzw. bis zum Ende der Messung perse richtig wären, jedoch um 180$^\circ$ verschoben.
 
 \subsubsection*{Vergleich zwischen Sensoren}
-Zur Detektion des Propellers stehen zwei verschiedene Arten an Sensoren zur Auswahl, welche im follgenden gegenübergestellt und bewertet werden.
+Zur Detektion des Propellerblattess stehen zwei verschiedene Arten an Sensoren zur Auswahl, welche im follgenden gegenübergestellt und bewertet werden.
 
 \newcolumntype{M}{>{\centering\arraybackslash}X}
 \begin{table}[h]
@@ -58,7 +57,7 @@ Zur Detektion des Propellers stehen zwei verschiedene Arten an Sensoren zur Ausw
 		\includegraphics[height=3cm]{images/chapter/03/sensor_tsl2591_schema.png} & \includegraphics[height=3cm]{images/chapter/03/sensor_ir_schema.png} \\
 		Adafruit TSL2591 & Adafruit Reflective IR Sensor \newline \\
 	\end{tabularx}
-	\caption{Vergleich zwischen zwei verschiedenen Arten an Sensoren zur Detektion des Propellers}
+	\caption{Vergleich zwischen zwei verschiedenen Arten an Sensoren zur Detektion des Propellerblattes}
 \end{table}
 \todo{wohin mit den quellenverweisen der zwei unteren Bildern}
 
@@ -85,8 +84,8 @@ Der wichtigste Aspekt hierbei ist jedoch die deutlich höhere Abtastrate des \ac
 Abbildung \ref{fig:ir_example} stellt eine exemplarischen Verwendungszweck des \ac{IR}s dar. 
 Der Sensor (in Abbildung \ref{fig:ir_example} durch ein S repräsentiert) ist sowohl direkt mit dem Arduino als auch mit einem Pull-Up Wiederstand verbunden.
 Dies hat zur Folge, dass am Arduino Port 5V anliegen, solange der Sensor eine Reflexion des vom Emitter (In Abbildung \ref{fig:ir_example} durch ein E repräsentiert) ausgesendeten Lichtes erhält.
-Wird das Licht nicht reflektiert - dies ist der Fall sobald sich die schwarze Fläche des Propellers vor dem \ac{IR} befindet - liegt am Arduino Port 0V an.
-Für die Detektion des Propellers - respektive für den Wechsel zwischen 5V und 0V - wird auch als Rise bzw. Fall-Time bezeichnet - benötigt der \ac{IR} lediglich eine Zeit von 8$\mu$s ausgehend einer Temperatur von 25$^\circ$C \cite[S.2]{ir_datasheet}.
+Wird das Licht nicht reflektiert - dies ist der Fall sobald sich die schwarze Fläche des Propellerblattess vor dem \ac{IR} befindet - liegt am Arduino Port 0V an.
+Für die Detektion des Propellerplattes - respektive für den Wechsel zwischen 5V und 0V - wird auch als Rise bzw. Fall-Time bezeichnet - benötigt der \ac{IR} lediglich eine Zeit von 8$\mu$s ausgehend einer Temperatur von 25$^\circ$C \cite[S.2]{ir_datasheet}.
 \todo{Quelle angeben wo des mit den 8 mus herkommt}
 \todo{Bild des Andreas ans Whiteboard gemalt hat reinpacken}
 Der Lichtsensor hingegen integriert alle gemessenen Werte über einen zuvor definierten Zeitraum. Das Problem hierbei ist, dass dieser Zeitraum lediglich auf die folgenden Werte gesetzt werden kann \cite[S.13]{tsl2591_datasheet}:
@@ -98,13 +97,13 @@ Der Lichtsensor hingegen integriert alle gemessenen Werte über einen zuvor defi
 	\item 500ms
 	\item 600ms
 \end{itemize}
-Ein Flugzeugmotor dreht im Leerlauf mit ca. 2500 U/s. Um ein valides Ergebniss zu erziehlen, muss die minimale Abtastrate höher als die maximale Umdrehungszahl des Motors sein, um sicherzustellen, dass der schwarz markierte Bereich des Propellers auch detektiert wurde.
+Ein Flugzeugmotor dreht im Leerlauf mit ca. 2500 U/s. Um ein valides Ergebniss zu erziehlen, muss die minimale Abtastrate höher als die maximale Umdrehungszahl des Motors sein, um sicherzustellen, dass der schwarz markierte Bereich des Propellerblattess auch detektiert wurde.
 Umgerechnet bedeutet dies, dass der Propeller für eine Umdrehung ca. 24ms benötigt.
 Da die geringste Abtastrate des Lichtsensors jedoch 100ms beträgt, ist dieser für den Anwendugsfall dieser Studienarbeit ungeeignet.
 Neben der Abtastrate ist auch die Integration der gemessenen Werte ein Problem. 
-Da die schwarze Fläche des Propellers deutlich kurzere Zeit vor dem Sensor ist als dies nicht der Fall ist würde eine aufintegration die kurze Zeit, die sich der Propeller vor dem Sensor befindet deutlich geringer ins Gewicht fallen als die zeit in der er sich nicht vor dem Sensor befindet.
+Da die schwarze Fläche des Propellerblattess deutlich kurzere Zeit vor dem Sensor ist als dies nicht der Fall ist würde eine aufintegration die kurze Zeit, die sich der Propeller vor dem Sensor befindet deutlich geringer ins Gewicht fallen als die zeit in der er sich nicht vor dem Sensor befindet.
 \todo{umvormulieren}
-Aus diesen Gründen wurde für die Umsetzung dieser Studienzeit auf den \ac{IR} als Sensor zur Detektion des Propellers gesetzt.
+Aus diesen Gründen wurde für die Umsetzung dieser Studienzeit auf den \ac{IR} als Sensor zur Detektion des Propellerblattes gesetzt.
 
 
 
@@ -114,7 +113,7 @@ Aus diesen Gründen wurde für die Umsetzung dieser Studienzeit auf den \ac{IR} 
 % lichtspektrum grafik https://de.wikipedia.org/wiki/Ultraviolettstrahlung#/media/File:Electromagnetic_spectrum_c.svg
 % ir schaltung https://cdn-shop.adafruit.com/product-files/2349/pid2349.png
 
-\subsubsection*{Probleme bei der Detektion des Propellers mit einem \ac{IR}}
+\subsubsection*{Probleme bei der Detektion des Propellerblattes mit einem \ac{IR}}
 Aufgrund der technischen Beschaffenheit des \ac{IR}s ist eine Detektion des Propellerblattes in der Theorie ohne weiteres möglich.
 Die Praxis zeigt jedoch, dass hierbei einige Probleme auftreten können.
 
