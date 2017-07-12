@@ -7,6 +7,7 @@
 \subsection{Motorenmodell}
 
 \subsection{Hardwaremodell}
+\label{subsec:hardwaremodell}
 
 \section{Technische Umsetzung}
 
@@ -117,7 +118,7 @@ Aus diesen Gründen wurde für die Umsetzung dieser Studienzeit auf den \ac{IR} 
 Aufgrund der technischen Beschaffenheit des \ac{IR}s ist eine Detektion des Propellerblattes in der Theorie ohne weiteres möglich.
 Die Praxis zeigt jedoch, dass hierbei einige Probleme auftreten können.
 
-Ein Problem des \ac{IR}s ist der benötigte Abstand zwischen Sensor und Propellerblatt von minnimal 2mm bis maximal 10mm, sowie der richtige Winkel.
+Ein Problem des \ac{IR}s ist der benötigte Abstand zwischen Sensor und Propellerblatt von minnimal 2mm bis maximal 10mm, sowie der richtige Winkel zum Propellerblatt.
 \todo{Woher kommt die Info??}
 Es reicht jedoch leider nicht aus, den Sensor fix an einer Stelle zu befestigen, da sich durch die Fliehkräfte der gewichteten Propellerblätter (Gewichte wurden verwendet um Unwucht zu erzeugen - hierauf wird in Kapitel \ref{subsec:detektion_der_unwucht} genauer eingegangen) der Abstand zwischen Propellerblatt und Sensor verändert.
 \begin{figure}[H]
@@ -129,10 +130,44 @@ Es reicht jedoch leider nicht aus, den Sensor fix an einer Stelle zu befestigen,
 Aus diesem Grund wurde die Holzkonstruktion mit einem Klettband versehen, wie in Abbildung \ref{fig:exp_ir_sensor} zu sehen ist.
 Dies ermöglicht es, den Sensor für jeden Propeller individuell einzustellen.
 
-% Probleme / Macken des IR-Reflektions-Sensors:
-% - Ständige Probleme mit Abstand, da Sensor nur zwischen 2-10mm funktioniert
-% - Ständige Probleme durch Sonneneinstrahlung und ein damit in verbindung stehendes fehlverhalten der detektion des Propellers (Propeller kam oftmals vorbei und wurde nicht erkannt)
-% - Detektion des Propellers ist mit diesem Sensor allerdings möglich !!
+Neben dem Abstand bzw. dem Winkel des \ac{IR}s spielen jedoch auch die Lichteinflüsse eine Rolle.
+Im Gegensatz zum Lichtsensor ist der \ac{IR} extrem anfällig gegenüber auf den Sensor einströmendes Licht.
+Dies hat zur Folge, dass der Versuch nur in einer Umgebung mit kontrollierten Lichteinflüssen funktionieren kann.
+Aufgefallen ist dieses Problem im Kontext dieser Studienarbeit, sobald sich der Sensor direkt vor einem Fenster mit Blickrichtung auf dieses befand.
+Jedoch ist auch zu geringes Licht ein Problem, da hier der \ac{IR} die schwarze Fläche des Propellerblattes nicht mehr zuverlässig detektieren kann.
+
+Das größte Problem stellt jedoch die kombination, der in Kapitel \ref{subsec:hardwaremodell} bewusst auf zwei Arduinos aufgeteilten Sensoren, bestehend aus einem \ac{9-DOF} - dieser wird in Kapitel \ref{subsec:detektion_der_unwucht} näher beleuchtet - und einem \ac{IR}, an einem einzigen Arduino dar.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/chapter/03/hardware-layout-with-one-arduino.png}
+	\caption{Altes Hardwaremodell mit einem Arduino}
+\end{figure}
+Bei gelichzeitigem Messen beider Sensoren ist eine zuverlässige detektion des Rotorblattes nicht möglich.
+Abbildung \ref{fig:interrupts_are_shit} stellt die Messergebnisse des \ac{IR}s graphisch dar.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/chapter/03/interrupts_are_shit.png}
+	\caption{Messwerte des \ac{IR}s bei gleichzeitiger Messung eines \ac{IR}s und eines \ac{9-DOF}s}
+	\label{fig:interrupts_are_shit}
+\end{figure}
+Wie in Abbildung \ref{fig:interrupts_are_shit} zu erkennen ist, wurde das Propellerblatt nur unregelmäßig erkannt.
+Desweiteren wurden teilweise auch Spiztenwerte von 15V gemessen, welche aufgrund der Stromversorgung von maximal 5V nicht vorkommen können.
+
+Aus diesem Grund wurden die Sensoren auf die zwei Arudinos, \ac{A1} und \ac{A2} aufgeteilt (wie in Abbildung \ref{key} \todo{ref auf hardwaremodell bild setzen} dargestellt) und die Aufgaben entsprechend verteilt (wie in Abbildung \ref{fig:aufgaben-arduinos} dargestellt).
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/chapter/03/aufgaben-arduinos.png}
+	\caption{Aufgaben der beiden Arduinos \ac{A1} und \ac{A2}}
+	\label{fig:aufgaben-arduinos}
+\end{figure}
+Durch die Trennung beider Sensoren und die Aufgabenteilung in Propellerblattdetektion und Unwuchtmessung ist \ac{A1} nun in der Lage das Propellerblatt konstant (im Rahmen einer gewissen Fehlertoleranz) zu detektieren.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/chapter/03/self_made_interrupt_a1.png}
+	\caption{Messerte des \ac{A1}}
+	\label{fig:self_made_interrupt_a1}
+\end{figure}
+\todo{sollte hier noch der codesnippsel rein wie wir die selfmade interrupts erzeugt haben?}
 
 \subsection{Detektion der Unwucht}
 \label{subsec:detektion_der_unwucht}
