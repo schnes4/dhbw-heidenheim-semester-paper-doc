@@ -11,44 +11,131 @@
 \section{Technische Umsetzung}
 
 \subsection{Detektion des Propellerblattes}
-Detektion des Propellers notwendig, da sonst nur eine Unwuchtdetektion möglich ist, aber keine Unwuchtlokalisierung
-Im Endeffekt muss der Arduino in der Lage sein exakt sagen zu können, wann einer der beiden Seiten des Propellers an ihm vorbei kam
-Es ist nicht notwendig beide Seiten des Propellers individuell erkennen zu können, da auf die Andere Seite Rückschlüsse gezogen werden können
-Beide Seiten individuell erkennen zu können bringt allerdings vorteile im bereich der Zuordnung der Messergebnisse der Unwucht
+\todo{auf Propeller oder Prpellerblatt einigen}
+Um neben einer Umwuchtdetektion auch eine Umwuchtlokalisierung zu ermöglichen, ist die Detektion mindestens eines Propellerblattes zwingend notwendig.
+Zwingend notwendig ist dies, da der Arduino für die lokalisierung der Unwucht die Unwuchtmessung jeweils pro vollständiger Umdrehung ($360^\circ$ Umdrehung) des Propellers starten muss.
+Durch die Detektion beider Propellerblätter würden sich Vorteile bei der Zuordnung der Messergebnisse der Unwucht ergeben. 
+Da sich dies jedoch, wie in den follgenden Kapiteln aufgezeigt wird, aufgrund der technischen Umsetzung als problematisch herrausstellt und durch die Detektion eines Propellerblattes und der Umdrehungsgeschwindigkeit des Propellers Rückschlüsse auf das zweite Propellerblatt gezogen werden können, wird im Zuge dieser Studienarbeit auf die Detektion des zweiten Propellerblattes verzichtet.
 
 \subsubsection*{Theoretische Vorgehensweise}
-Markierung einer Seite des Propellers durch Anmalen oder durch Beklebung
-Verschiedene Sensoren testen, welche diese angebrachten Beklebungen, bzw. die angemalten Flächen erkennen können
+Für die Detektion des Propellerblattes wurden zwei technische Lösungen erarbeitet, welche im späteren Verlauf dieses Kapitels gegenüber gestellt werden.
+Beiden Lösungen liegt jedoch die gleiche theoretische Vorgehensweise zugrunde:
+\begin{enumerate}
+	\item Eine Seite des Propellers schwarz anmalen / schwarz bekleben
+	\item Propeller mit definierter Drehzahl rotieren lassen
+	\item Bei Detektion der schwarzen Fläche Interrupt auslösen
+\end{enumerate}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.9\textwidth]{chapter/03/propeller_detektion.jpg}
+	\caption{Modifikation zur Detektion eines Propellers}
+	\label{fig:propeller_detektion}
+\end{figure}
+Wie in Abbildung \ref{fig:propeller_detektion} erkennbar ist, gestaltet sich die Detektion des zweiten Propellerblattes als schwierig. 
+Um das Propelerblatt für den Sensor erkennbar zu machen, müsste es auf der zweiten Seite ebenfalls schwarz bemahlt bzw. beklebt werden.
+Dies würde jedoch dazu führen, dass bei laufendem Motor zwar zwischen beiden Propellerblättern unterschieden werden kann (jedes zweite erkannte Propellerblatt ist das gleiche), jedoch keine verlässliche Aussage möglich ist, an welchem der beiden Propellerblätter die Unwucht letztlich wirklich ist, da der Sensor nicht wirklich zwischen den Propellerblättern unterscheiden kann.
+Denn selbst die Unterscheidung der Propellerblätter bei laufendem Motor nicht sehr zuverlässlich.
+Kommt es beispielsweise zu einem Messfehler - bedingt durch Lichteinflüsse oder änlichem - kann es passieren, dass ein Propellerblatt nicht erkannt respektive übersprungen wird.
+Wird die Messung mit nur einm bemalten bzw. beklebten Propellerblatt durhgeführt und durch einen Messfehler nicht erkannt, ist die Messung bis zur nächsten Detektion prinzipiell falsch, kann aber später als Ausreiser ignoriert werden.
+Werden jedoch beide Seiten bemalt bzw. beklebt und eine der beiden Seiten wird übersprungen, verschiebt sich die Position des Propellers für die restliche Messung.
+Dies würde zu einem vollkommen falschen Merrergebnis führen.
+Falsche Werte könnten nicht mehr als Ausreiser aussortiert werden, da diese ab dem Zeitpunkt des Messfehlers bis zum Zeitpunkt des nächsten Messfehlers bzw. bis zum Ende der Messung perse richtig wären, jedoch um 180$^\circ$ verschoben.
 
 \subsubsection*{Vergleich zwischen Sensoren}
-Detektion des Propellers könnte auf zwei Arten erfolgen:
-- Detektion mittels eines Lichtsensors:
--- Eine Seite des Propellers wird hierbei schwarz angemalt / schwarz beklebt (auf jedenfall verdunkelt) um das Messergebnis zu verdeutlichen
--- Misst der Lichtsensor nun eine "deutliche" Verdunkelung (relativ zu den anderen Lichtwerten) kam der markierte Propeller vorbei und kann somit lokalisieren werden
--- Verwendeter Lichtsensor: Adafruit TSL2591
---- Dieser Lichtsensor bot ein paar coole Features weshalb man sich für diesen entschieden hat:
----- Sehr hohe Lux Reichtweite, weshalb Einsatz fast überall möglich
----- Differenziert beim Messen / Auslesen zwischen IR Licht- und komplettem Lichtspektrum, somit können Lichteinflüsse (durch helle Sonneinstrahlung) vermieden werden
----- Bietet Interrupt Schnittstelle wodurch deutliche Komplexitätsreduzierung
-- Detektion mittels einer IR-Reflektions-Schranke:
--- Eine Seite des Propellers wird wiederum schwarz angemalt / schwarz beklebt, bzw. wenn der Rotor bereits zu dunkel ist, wird eine Seite mit reflektierender Farbe angemalt / beklebt
--- Misst der IR-Reflektions-Sensor nun eine Reflektion (direkt durch Propeller oder durch reflektierender Auftrag auf Propeller) ist eine Seite des Propellers lokalisiert worden
--- Verwendeter IR-Reflektions-Sensor: https://www.adafruit.com/product/2349
---- Features:
----- Deutlich einfacherer Aufbau im Gegensatz zum Lichtsensor
----- Abtastraten / Messergebnisse in einer deutlich höheren Geschwindigkeit als beim Lichtsensor
+Zur Detektion des Propellers stehen zwei verschiedene Arten an Sensoren zur Auswahl, welche im follgenden gegenübergestellt und bewertet werden.
 
-\subsubsection*{Probleme bei der Detektion}
-Weshalb der Lichtsensor nicht funktioniert hat:
-- Der Lichtsensor verwendet einen kleinen Mikrocontroller, welcher die Werte der beiden Lichtdioden über einen Zeitraum von mindestens 100ms aggregiert
-- Er ist damit zu langsam (Vergleich: Eine Umdrehung des Propellers benötigt ca. 24ms)
-- Dieses Verhalten wurde erst nach dem Kauf des Lichtsensors entdeckt
-Probleme / Macken des IR-Reflektions-Sensors:
-- Ständige Probleme mit Abstand, da Sensor nur zwischen 2-10mm funktioniert
-- Ständige Probleme durch Sonneneinstrahlung und ein damit in verbindung stehendes fehlverhalten der detektion des Propellers (Propeller kam oftmals vorbei und wurde nicht erkannt)
-- Detektion des Propellers ist mit diesem Sensor allerdings möglich !!
+\newcolumntype{M}{>{\centering\arraybackslash}X}
+\begin{table}[h]
+	\centering
+	\begin{tabularx}{0.95\textwidth}{M|M}
+
+		Lichtsensor & IR-Reflektions-Sensor \\
+		\hline
+		\includegraphics[height=3cm]{images/chapter/03/sensor_tsl2591.jpg} & \includegraphics[height=4cm]{images/chapter/03/sensor_ir.jpg}  \\
+		\includegraphics[height=3cm]{images/chapter/03/sensor_tsl2591_schema.png} & \includegraphics[height=3cm]{images/chapter/03/sensor_ir_schema.png} \\
+		Adafruit TSL2591 & Adafruit Reflective IR Sensor \newline \\
+	\end{tabularx}
+	\caption{Vergleich zwischen zwei verschiedenen Arten an Sensoren zur Detektion des Propellers}
+\end{table}
+\todo{wohin mit den quellenverweisen der zwei unteren Bildern}
+
+Wie bereits beschrieben, arbeiten beide Sensoren auf gleiche Art und Weise - durch Detektion einer schwarzen Fläche. 
+Allerdings ergeben sich durch die technologischen Unterschiede diverse Aspekte welche für bzw. gegen eine Verwendung sprechen.
+Neben der Differenzierung zwischen Infrarotem Lichtspektrum und sichtbarem Lichtspektrum bei der Messung, wiest der Lichtsensor auch eine sehr hohe Lux Reichweite auf. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{images/chapter/03/lichtspektrum.png}
+	\caption{Darstellung des gesamten Lichtspektrums}
+\end{figure}
+Hierduch können störhafte Lichteinflüsse wie z.B. durch sehr helle Sonneinstrahlung verwieden werden.
+Dies erlaubt den Einsatz des Lichtsensors in nahezu allen Lichtverhältnissen - ein nicht zu vernachlässigender Aspekt, da hierdurch die Unwuchtmessung am realen Flugzeugmotor nicht zwingend in einer Umgebung mit kontrolierbaren Lichteinflüssen wie beispielsweise einem Hangar stattfinden muss.
+Desweiteren bietet der Lichtsensor eine integrierte Interrupt Schnnittstelle, wodurch die Komplexität deutlich reduziert werden könnte im Vergleich zu einem \ac{IR}.
+Trotz der Tatsache, dass der Lichtsensor in den soeben beschriebenen Aspekten einem \ac{IR} deutlich überlegen ist, bietet dieser deutliche Vorteile, welche letztlich ausschlaggebend ist für die Entscheidung welcher der beiden Sensoren verwendet werden soll.
+Durch die technische Beschaffenheit des \ac{IR} im Vergleich zum Lichtsensor ist ein deutlich einfacherer Aufbau im Vergleich zum Lichtsensor möglich.
+Der wichtigste Aspekt hierbei ist jedoch die deutlich höhere Abtastrate des \ac{IR} im Vergleich zum Lichtsensor. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{images/chapter/03/sensor_ir_schaltung.png}
+	\caption{Beispielhafte Verwendung des \ac{IR}s}
+	\label{fig:ir_example}
+\end{figure}
+Abbildung \ref{fig:ir_example} stellt eine exemplarischen Verwendungszweck des \ac{IR}s dar. 
+Der Sensor (in Abbildung \ref{fig:ir_example} durch ein S repräsentiert) ist sowohl direkt mit dem Arduino als auch mit einem Pull-Up Wiederstand verbunden.
+Dies hat zur Folge, dass am Arduino Port 5V anliegen, solange der Sensor eine Reflexion des vom Emitter (In Abbildung \ref{fig:ir_example} durch ein E repräsentiert) ausgesendeten Lichtes erhält.
+Wird das Licht nicht reflektiert - dies ist der Fall sobald sich die schwarze Fläche des Propellers vor dem \ac{IR} befindet - liegt am Arduino Port 0V an.
+Für die Detektion des Propellers - respektive für den Wechsel zwischen 5V und 0V - wird auch als Rise bzw. Fall-Time bezeichnet - benötigt der \ac{IR} lediglich eine Zeit von 8$\mu$s ausgehend einer Temperatur von 25$^\circ$C \cite[S.2]{ir_datasheet}.
+\todo{Quelle angeben wo des mit den 8 mus herkommt}
+\todo{Bild des Andreas ans Whiteboard gemalt hat reinpacken}
+Der Lichtsensor hingegen integriert alle gemessenen Werte über einen zuvor definierten Zeitraum. Das Problem hierbei ist, dass dieser Zeitraum lediglich auf die folgenden Werte gesetzt werden kann \cite[S.13]{tsl2591_datasheet}:
+\begin{itemize}
+	\item 100ms
+	\item 200ms
+	\item 300ms
+	\item 400ms
+	\item 500ms
+	\item 600ms
+\end{itemize}
+Ein Flugzeugmotor dreht im Leerlauf mit ca. 2500 U/s. Um ein valides Ergebniss zu erziehlen, muss die minimale Abtastrate höher als die maximale Umdrehungszahl des Motors sein, um sicherzustellen, dass der schwarz markierte Bereich des Propellers auch detektiert wurde.
+Umgerechnet bedeutet dies, dass der Propeller für eine Umdrehung ca. 24ms benötigt.
+Da die geringste Abtastrate des Lichtsensors jedoch 100ms beträgt, ist dieser für den Anwendugsfall dieser Studienarbeit ungeeignet.
+Neben der Abtastrate ist auch die Integration der gemessenen Werte ein Problem. 
+Da die schwarze Fläche des Propellers deutlich kurzere Zeit vor dem Sensor ist als dies nicht der Fall ist würde eine aufintegration die kurze Zeit, die sich der Propeller vor dem Sensor befindet deutlich geringer ins Gewicht fallen als die zeit in der er sich nicht vor dem Sensor befindet.
+\todo{umvormulieren}
+Aus diesen Gründen wurde für die Umsetzung dieser Studienzeit auf den \ac{IR} als Sensor zur Detektion des Propellers gesetzt.
+
+
+
+% links
+% tsl schema: aus pdf https://cdn-shop.adafruit.com/datasheets/TSL25911_Datasheet_EN_v1.pdf
+% ir schema: aus pdf https://www.sparkfun.com/datasheets/Sensors/QRB1114.pdf
+% lichtspektrum grafik https://de.wikipedia.org/wiki/Ultraviolettstrahlung#/media/File:Electromagnetic_spectrum_c.svg
+% ir schaltung https://cdn-shop.adafruit.com/product-files/2349/pid2349.png
+
+\subsubsection*{Probleme bei der Detektion des Propellers mit einem \ac{IR}}
+Aufgrund der technischen Beschaffenheit des \ac{IR}s ist eine Detektion des Propellerblattes in der Theorie ohne weiteres möglich.
+Die Praxis zeigt jedoch, dass hierbei einige Probleme auftreten können.
+
+Ein Problem des \ac{IR}s ist der benötigte Abstand zwischen Sensor und Propellerblatt von minnimal 2mm bis maximal 10mm, sowie der richtige Winkel.
+\todo{Woher kommt die Info??}
+Es reicht jedoch leider nicht aus, den Sensor fix an einer Stelle zu befestigen, da sich durch die Fliehkräfte der gewichteten Propellerblätter (Gewichte wurden verwendet um Unwucht zu erzeugen - hierauf wird in Kapitel \ref{subsec:detektion_der_unwucht} genauer eingegangen) der Abstand zwischen Propellerblatt und Sensor verändert.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/chapter/03/exp_ir_sensor.jpg}
+	\caption{Befestigung des Sensors mithilfe eines Klettbandes}
+	\label{fig:exp_ir_sensor}
+\end{figure}
+Aus diesem Grund wurde die Holzkonstruktion mit einem Klettband versehen, wie in Abbildung \ref{fig:exp_ir_sensor} zu sehen ist.
+Dies ermöglicht es, den Sensor für jeden Propeller individuell einzustellen.
+
+% Probleme / Macken des IR-Reflektions-Sensors:
+% - Ständige Probleme mit Abstand, da Sensor nur zwischen 2-10mm funktioniert
+% - Ständige Probleme durch Sonneneinstrahlung und ein damit in verbindung stehendes fehlverhalten der detektion des Propellers (Propeller kam oftmals vorbei und wurde nicht erkannt)
+% - Detektion des Propellers ist mit diesem Sensor allerdings möglich !!
 
 \subsection{Detektion der Unwucht}
+\label{subsec:detektion_der_unwucht}
 
 \subsubsection*{Theoretische Vorgehensweise}
 Aufgrund der Unwucht des Propellers entstehen Vibrationen am Motorblock
