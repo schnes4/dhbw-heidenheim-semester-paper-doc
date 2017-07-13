@@ -16,9 +16,11 @@ Beispielhaft ist dies in Abbildung \ref{fig:arduino_uno_schema} anhand eines Ard
 \end{figure}
 Die Boards stellen eine serielle Schnittstelle, unter anderem auch \ac{USB} zur Verfügung, über welche unter anderem die Programmierung des Mikrocontrollers stattfindet.
 Die Software für den Arduino wird in einer C, bzw. C++ ähnlichen Programmiersprache geschrieben.
+Das Code-Beispiel in Listing \ref{lst:arduino} stellt ein Programm für ein Blicklicht dar und zeigt die verwendete Sprache beispielhaft.
+In dem Listing \ref{lst:arduino} ist ein Code-Beispiel abgebildet, welche diese zeigt.
 Für das Entwickeln des Programmes und das Programmiern des Mikrocontrollers wird von dem Hersteller eine Entwicklungsumgebung zur Verfügung gestellt, welche diese Aufgaben vereinfacht.
 
-\begin{lstlisting}[language=C, label=arduino_sample_code, title=Beispiel-Code eines Blinklichtes für den Arduino]
+\begin{lstlisting}[language=C, label={lst:arduino}, caption=Beispiel-Code eines Blinklichtes für den Arduino]
 int ledPin = 13;
 
 void setup() {
