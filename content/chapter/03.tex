@@ -158,13 +158,33 @@ Durch die Trennung beider Sensoren und die Aufgabenteilung in Propellerblattdete
 \label{subsec:detektion_der_unwucht}
 
 \subsubsection*{Theoretische Vorgehensweise}
-Aufgrund der Unwucht des Propellers entstehen Vibrationen am Motorblock
-Durch Anbringung eines Sensors direkt am Motorblock können diese Vibrationen gemessen werden
-Je nach Auslenkung des Motorblockes in Abhängigkeit von dem aktuell vorbeidrehenden Propeller sollten so Rückschlüsse auf die Herrkunft (also von welchem Propeller aus) der Unwucht getroffen werden können
+Besitzt ein Propellerblatt eine Unwucht, erzeugt dieser deutlich spührbare Vibrationen am Motorblock.
+Diese Vibrationen sollen mithilfe eines 3-Achsen Sensors gemessen werden.
+Je nach Auslenkung des Motorblockes kann hierdurch eine Unwucht detektiert werden.
+Desweiteren kann unter Berücksichtigung der Propellerdetektion, eine Unwuchtlokalisierung erfolgen. 
+
+Um solch eine Unwucht zu erzeugen, werden wie in Abbildung \ref{fig:propeller-mit-unwucht} gezeigt, mehrere Propeller mit unterschiedlichen Gewichten, bzw. identischen Gewichten jedoch an unterschiedlichen Stellen präpariert.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/chapter/03/propeller-mit-unwucht.png}
+	\caption{Propeller mit unterschiedlichen Unwuchten}
+	\label{fig:propeller-mit-unwucht}
+\end{figure}
 
 \subsubsection*{Sensortechnologie}
-Verwendeter Sensor: Adafruit LSM9DS1
-Eingesetzter Sensor ist ein 9-DOF (\textbf{D}egrees \textbf{f} \textbf{F}reedom). Er ist mit 4 verschiedenen Sensoren ausgestattet. Darunter ein Beschleunigsungssensor welche die Beschleunigung des Sensors in drei verschiedene Richtungen misst, ein Gyroskop welcher die Ausrichtung des Sensors misst und ein Magnetometer welcher die Lage des Sensors in Abhängigkeit des Erdmagnetfeldes darstellen kann. Der vierte Sensor ist ein Temperatursensor, welcher für dieses Experiment jedoch irrelevant ist.
+Als 3-Achsen Sensor soll der LSM9DS1 9-DOF Sensor von Adafruit eingesetzt werden.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=5cm]{images/chapter/03/9-dof.png}
+	\caption{Schematische Darstellung des verwendeten Sensors}
+\end{figure}
+Dieser ist mit 4 verschiedenen Sensoren ausgestattet:
+\begin{itemize}
+	\item Beschleunigungssensor (Beschleunigung des Sensors in drei Richtungen)
+	\item Gyroskop (Ausrichtung des Sensors)
+	\item Magnetometer (Lage in Abhängigkeit des Erdmagnetfeldes)
+	\item Temperatursensor
+\end{itemize}
 
 \subsubsection*{Messung der Unwucht}
 Hier kommen dann Bilder rein und wir erklären und diskutieren die Ergebnisse dann, oder?
