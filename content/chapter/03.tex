@@ -13,12 +13,12 @@
 
 \subsection{Detektion des Propellerblattes}
 Um neben einer Umwuchtdetektion auch eine Umwuchtlokalisierung zu ermöglichen, ist die Detektion mindestens eines Propellerblattes zwingend notwendig.
-Zwingend notwendig ist dies, da der Arduino für die lokalisierung der Unwucht die Unwuchtmessung jeweils pro vollständiger Umdrehung ($360^\circ$ Umdrehung) des Propellers starten muss.
-Durch die Detektion beider Propellerblätter würden sich Vorteile bei der Zuordnung der Messergebnisse der Unwucht ergeben. 
-Da sich dies jedoch, wie in den follgenden Kapiteln aufgezeigt wird, aufgrund der technischen Umsetzung als problematisch herrausstellt und durch die Detektion eines Propellerblattes und der Umdrehungsgeschwindigkeit des Propellers Rückschlüsse auf das zweite Propellerblatt gezogen werden können, wird im Zuge dieser Studienarbeit auf die Detektion des zweiten Propellerblattes verzichtet.
+Für die Lokalisierung der Unwucht muss der Arduino die Unwuchtmessung jeweils pro vollständiger Umdrehung ($360^\circ$ Umdrehung) des Propellers starten.
+Durch die Detektion beider Propellerblätter ergeben sich prinzipiell Vorteile bei der Zuordnung der Messergebnisse der Unwucht. 
+Da sich dies jedoch, wie in den folgenden Kapiteln aufgezeigt wird, aufgrund der technischen Umsetzung als problematisch herausstellt und durch die Detektion eines Propellerblattes und der Umdrehungsgeschwindigkeit des Propellers Rückschlüsse auf das zweite Propellerblatt gezogen werden können, wird im Zuge dieser Studienarbeit auf die Detektion des zweiten Propellerblattes verzichtet.
 
 \subsubsection*{Theoretische Vorgehensweise}
-Für die Detektion des Propellerblattes wurden zwei technische Lösungen erarbeitet, welche im späteren Verlauf dieses Kapitels gegenüber gestellt werden.
+Für die Detektion des Propellerblattes werden zwei technische Lösungen erarbeitet, welche im späteren Verlauf dieses Kapitels gegenüber gestellt werden.
 Beiden Lösungen liegt jedoch die gleiche theoretische Vorgehensweise zugrunde:
 \begin{enumerate}
 	\item Eine Seite des Propellers schwarz anmalen / schwarz bekleben
@@ -34,17 +34,17 @@ Beiden Lösungen liegt jedoch die gleiche theoretische Vorgehensweise zugrunde:
 	\label{fig:propeller_detektion}
 \end{figure}
 Wie in Abbildung \ref{fig:propeller_detektion} erkennbar ist, gestaltet sich die Detektion des zweiten Propellerblattes als schwierig. 
-Um das Propelerblatt für den Sensor erkennbar zu machen, müsste es auf der zweiten Seite ebenfalls schwarz bemahlt bzw. beklebt werden.
-Dies würde jedoch dazu führen, dass bei laufendem Motor zwar zwischen beiden Propellerblättern unterschieden werden kann (jedes zweite erkannte Propellerblatt ist das gleiche), jedoch keine verlässliche Aussage möglich ist, an welchem der beiden Propellerblätter die Unwucht letztlich wirklich ist, da der Sensor nicht wirklich eindeutig zwischen den Propellerblättern unterscheiden kann.
-Denn selbst die Unterscheidung der Propellerblätter bei laufendem Motor nicht sehr zuverlässlich.
-Kommt es beispielsweise zu einem Messfehler - bedingt durch Lichteinflüsse oder änlichem - kann es passieren, dass ein Propellerblatt nicht erkannt respektive übersprungen wird.
-Wird die Messung mit nur einm bemalten bzw. beklebten Propellerblatt durhgeführt und durch einen Messfehler nicht erkannt, ist die Messung bis zur nächsten Detektion prinzipiell falsch, kann aber später als Ausreiser ignoriert werden.
-Werden jedoch beide Seiten bemalt bzw. beklebt und eine der beiden Seiten wird übersprungen, verschiebt sich die Position des Propellerblattes für die restliche Messung.
-Dies würde zu einem vollkommen falschen Merrergebnis führen.
-Falsche Werte könnten nicht mehr als Ausreiser aussortiert werden, da diese ab dem Zeitpunkt des Messfehlers bis zum Zeitpunkt des nächsten Messfehlers bzw. bis zum Ende der Messung perse richtig wären, jedoch um 180$^\circ$ verschoben.
+Um das Propellerblatt für den Sensor erkennbar zu machen, muss dies auf der zweiten Seite ebenfalls schwarz bemahlt bzw. beklebt werden.
+Dies führt jedoch dazu, dass bei laufendem Motor zwar zwischen beiden Propellerblättern unterschieden werden kann (jedes zweite erkannte Propellerblatt ist das gleiche), jedoch keine verlässliche Aussage möglich ist, an welchem der beiden Propellerblätter die Unwucht letztlich wirklich ist, da eine eindeutige Unterscheidung zwischen den Propellerblättern durch den Sensor nicht möglich ist.
+
+Kommt es beispielsweise zu einem Messfehler - z.B. bedingt durch Lichteinflüsse - kann es passieren, dass ein Propellerblatt nicht erkannt respektive übersprungen wird.
+Wird die Messung mit nur einem bemalten bzw. beklebten Propellerblatt durchgeführt und durch einen Messfehler nicht erkannt, ist die Messung bis zur nächsten Detektion prinzipiell falsch, kann aber später als Ausreißer ignoriert werden.
+Werden beide Seiten bemalt bzw. beklebt und eine der beiden Seiten wird übersprungen, verschiebt sich die Position des Propellerblattes für die restliche Messung.
+Dies würde zu einem vollkommen falschen Messergebnis führen.
+Falsche Werte könnten nicht mehr als Ausreißer aussortiert werden, da diese ab dem Zeitpunkt des Messfehlers bis zum Zeitpunkt des nächsten Messfehlers bzw. bis zum Ende der Messung per se richtig wären, jedoch um 180$^\circ$ verschoben.
 
 \subsubsection*{Vergleich zwischen Sensoren}
-Zur Detektion des Propellerblattess stehen zwei verschiedene Arten an Sensoren zur Auswahl, welche im follgenden gegenübergestellt und bewertet werden.
+Zur Detektion des Propellerblattes stehen zwei verschiedene Arten an Sensoren zur Auswahl, welche im Folgenden gegenübergestellt und bewertet werden.
 
 \newcolumntype{M}{>{\centering\arraybackslash}X}
 \begin{table}[h]
@@ -61,20 +61,20 @@ Zur Detektion des Propellerblattess stehen zwei verschiedene Arten an Sensoren z
 \end{table}
 \todo{wohin mit den quellenverweisen der zwei unteren Bildern}
 
-Wie bereits beschrieben, arbeiten beide Sensoren auf gleiche Art und Weise - durch Detektion einer schwarzen Fläche. 
-Allerdings ergeben sich durch die technologischen Unterschiede diverse Aspekte welche für bzw. gegen eine Verwendung sprechen.
-Neben der Differenzierung zwischen Infrarotem Lichtspektrum und sichtbarem Lichtspektrum bei der Messung, wiest der Lichtsensor auch eine sehr hohe Lux Reichweite auf.
+Wie bereits beschrieben, erfolgt die Detektion des Propellerblattes bei beiden Sensoren durch die Detektion einer schwarzen Fläche. 
+Allerdings ergeben sich durch die technologischen Unterschiede diverse Aspekte welche eine Einsetzbarkeit im Kontext dieser Studienarbeit beeinflussen.
+Neben der Differenzierung zwischen infrarotem Lichtspektrum und sichtbarem Lichtspektrum bei der Messung, wiest der Lichtsensor eine sehr hohe Lux Reichweite auf.
 \todo{Quelle?} 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{images/chapter/03/lichtspektrum.png}
 	\caption{Darstellung des gesamten Lichtspektrums \cite[]{light_spectrum}}
 \end{figure}
-Hierduch können störhafte Lichteinflüsse wie z.B. durch sehr helle Sonneinstrahlung vermieden werden.
-Dies erlaubt den Einsatz des Lichtsensors in nahezu allen Lichtverhältnissen - ein nicht zu vernachlässigender Aspekt, da hierdurch die Unwuchtmessung am realen Flugzeugmotor nicht zwingend in einer Umgebung mit kontrolierbaren Lichteinflüssen wie beispielsweise einem Hangar stattfinden muss.
-Desweiteren bietet der Lichtsensor eine integrierte Interrupt Schnnittstelle, wodurch die Komplexität deutlich reduziert werden könnte im Vergleich zu einem \ac{IR}.
-Trotz der Tatsache, dass der Lichtsensor in den soeben beschriebenen Aspekten einem \ac{IR} deutlich überlegen ist, bietet dieser deutliche Vorteile, welche letztlich ausschlaggebend ist für die Entscheidung welcher der beiden Sensoren verwendet werden soll.
-Durch die technische Beschaffenheit des \ac{IR} im Vergleich zum Lichtsensor ist ein deutlich einfacherer Aufbau im Vergleich zum Lichtsensor möglich.
+Hierduch können unerwünschte Lichteinflüsse, wie beispielsweise sehr helle Sonneinstrahlung, vermieden werden.
+Dies erlaubt den Einsatz des Lichtsensors in nahezu allen Lichtverhältnissen - ein nicht zu vernachlässigender Aspekt, da hierdurch die Unwuchtmessung am realen Flugzeugmotor nicht zwingend in einer Umgebung mit kontrollierbaren Lichteinflüssen wie beispielsweise einem Hangar stattfinden muss.
+Des Weiteren bietet der Lichtsensor eine integrierte Interrupt Schnittstelle, wodurch die Komplexität deutlich reduziert werden kann im Vergleich zu einem \ac{IR}.
+Trotz der Tatsache, dass der Lichtsensor in den soeben beschriebenen Aspekten einem \ac{IR} deutlich überlegen ist, bietet ein \ac{IR} deutliche Vorteile, welche letztlich ausschlaggebend ist für die Entscheidung, welcher der beiden Sensoren verwendet werden soll.
+Durch die technische Beschaffenheit des \ac{IR} im Vergleich zum Lichtsensor ist ein einfacherer Versuchsaufbau im Vergleich zum Lichtsensor möglich.
 Der wichtigste Aspekt hierbei ist jedoch die deutlich höhere Abtastrate des \ac{IR} im Vergleich zum Lichtsensor. 
 \begin{figure}[H]
 	\centering
@@ -83,13 +83,13 @@ Der wichtigste Aspekt hierbei ist jedoch die deutlich höhere Abtastrate des \ac
 	\label{fig:ir_example}
 \end{figure}
 Abbildung \ref{fig:ir_example} stellt eine exemplarischen Verwendungszweck des \ac{IR}s dar. 
-Der Sensor (in Abbildung \ref{fig:ir_example} durch ein S repräsentiert) ist sowohl direkt mit dem Arduino als auch mit einem Pull-Up Wiederstand verbunden.
-Dies hat zur Folge, dass am Arduino Port 5V anliegen, solange der Sensor eine Reflexion des vom Emitter (In Abbildung \ref{fig:ir_example} durch ein E repräsentiert) ausgesendeten Lichtes erhält.
+Der Sensor (in Abbildung \ref{fig:ir_example} durch ein S repräsentiert) ist sowohl direkt mit dem Arduino, als auch mit einem Pull-Up Wiederstand verbunden.
+Dies hat zur Folge, dass am Prot des Arduinos 5V anliegen, solange der Sensor eine Reflexion des vom Emitter (In Abbildung \ref{fig:ir_example} durch ein E repräsentiert) ausgesendeten Lichtes erhält.
 Wird das Licht nicht reflektiert - dies ist der Fall sobald sich die schwarze Fläche des Propellerblattess vor dem \ac{IR} befindet - liegt am Arduino Port 0V an.
-Für die Detektion des Propellerplattes - respektive für den Wechsel zwischen 5V und 0V - wird auch als Rise bzw. Fall-Time bezeichnet - benötigt der \ac{IR} lediglich eine Zeit von 8$\mu$s ausgehend einer Temperatur von 25$^\circ$C \cite[S.2]{ir_datasheet}.
+Für die Detektion des Propellerplattes, respektive für den Wechsel zwischen 5V und 0V (wird auch als Rise bzw. Fall-Time bezeichnet) benötigt der \ac{IR} lediglich eine Zeit von 8$\mu$s ausgehend einer Temperatur von 25$^\circ$C \cite[S.2]{ir_datasheet}.
 \todo{Quelle angeben wo des mit den 8 mus herkommt}
 \todo{Bild des Andreas ans Whiteboard gemalt hat reinpacken}
-Der Lichtsensor hingegen integriert alle gemessenen Werte über einen zuvor definierten Zeitraum. Das Problem hierbei ist, dass dieser Zeitraum lediglich auf die folgenden Werte gesetzt werden kann \cite[S.13]{tsl2591_datasheet}:
+Der Lichtsensor hingegen integriert alle gemessenen Werte über einen zuvor definierten Zeitraum. Das Problem hierbei ist, dass für die Dauer des Zetiraums lediglich folgende Werte verwendet werden können \cite[S.13]{tsl2591_datasheet}:
 \begin{itemize}
 	\item 100ms
 	\item 200ms
@@ -120,29 +120,29 @@ Die Praxis zeigt jedoch, dass hierbei einige Probleme auftreten können.
 
 Ein Problem des \ac{IR}s ist der benötigte Abstand zwischen Sensor und Propellerblatt von minnimal 2mm bis maximal 10mm, sowie der richtige Winkel zum Propellerblatt.
 \todo{Woher kommt die Info??}
-Es reicht jedoch leider nicht aus, den Sensor fix an einer Stelle zu befestigen, da sich durch die Fliehkräfte der gewichteten Propellerblätter (Gewichte wurden verwendet um Unwucht zu erzeugen - hierauf wird in Kapitel \ref{subsec:detektion_der_unwucht} genauer eingegangen) der Abstand zwischen Propellerblatt und Sensor verändert.
+Es ist nicht ausreichend, den Sensor fix an einer Stelle zu befestigen, da sich durch die Zentrifugalkräfte der gewichteten Propellerblätter (Gewichte werden verwendet um Unwucht zu erzeugen - hierauf wird in Kapitel \ref{subsec:detektion_der_unwucht} genauer eingegangen) der Abstand zwischen Propellerblatt und Sensor verändert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/chapter/03/exp_ir_sensor.jpg}
 	\caption{Befestigung des Sensors mithilfe eines Klettbandes}
 	\label{fig:exp_ir_sensor}
 \end{figure}
-Aus diesem Grund wurde die Holzkonstruktion mit einem Klettband versehen, wie in Abbildung \ref{fig:exp_ir_sensor} zu sehen ist.
+Aus diesem Grund wird die Holzkonstruktion mit einem Klettband versehen, wie in Abbildung \ref{fig:exp_ir_sensor} zu sehen ist.
 Dies ermöglicht es, den Sensor für jeden Propeller individuell einzustellen.
 
-Neben dem Abstand bzw. dem Winkel des \ac{IR}s spielen jedoch auch die Lichteinflüsse eine Rolle.
-Im Gegensatz zum Lichtsensor ist der \ac{IR} extrem anfällig gegenüber auf den Sensor einströmendes Licht.
-Dies hat zur Folge, dass der Versuch nur in einer Umgebung mit kontrollierten Lichteinflüssen funktionieren kann.
-Aufgefallen ist dieses Problem im Kontext dieser Studienarbeit, sobald sich der Sensor direkt vor einem Fenster mit Blickrichtung auf dieses befand.
-Jedoch ist auch zu geringes Licht ein Problem, da hier der \ac{IR} die schwarze Fläche des Propellerblattes nicht mehr zuverlässig detektieren kann.
+Neben dem Abstand bzw. dem Winkel des \ac{IR}s spielen Lichteinflüsse eine Rolle.
+Im Gegensatz zum Lichtsensor ist der \ac{IR} anfällig gegenüber auf den Sensor einströmendes Licht.
+Dies hat zur Folge, dass der Versuch nur in einer Umgebung mit kontrollierten Lichteinflüssen erfolgreich stattfinden kann.
+Auffällig ist dieses Phänomen, sobald sich der Sensor direkt vor einem Fenster mit Blickrichtung auf dieses befindet.
+Zu geringes Licht ist ein weiteres Problem, da hier die schwarze Fläche des Propellerblattes durch den \ac{IR} nicht mehr zuverlässig detektiert werden kann.
 
-Das größte Problem stellt jedoch die kombination, der in Kapitel \ref{subsec:hardwaremodell} bewusst auf zwei Arduinos aufgeteilten Sensoren, bestehend aus einem \ac{9-DOF} - dieser wird in Kapitel \ref{subsec:detektion_der_unwucht} näher beleuchtet - und einem \ac{IR}, an einem einzigen Arduino dar.
+Das größte Problem stellt die Kombination, der in Kapitel \ref{subsec:hardwaremodell} bewusst auf zwei Arduinos aufgeteilten Sensoren, bestehend aus einem \ac{9-DOF}, welcher in Kapitel \ref{subsec:detektion_der_unwucht} näher beleuchtet wird, und einem \ac{IR} an einem einzigen Arduino dar.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/chapter/03/hardware-layout-with-one-arduino.png}
 	\caption{Altes Hardwaremodell mit einem Arduino}
 \end{figure}
-Bei gelichzeitigem Messen beider Sensoren ist eine zuverlässige detektion des Rotorblattes nicht möglich.
+Bei gleichzeitigem Messen beider Sensoren ist eine zuverlässige Detektion des Rotorblattes nicht möglich.
 Abbildung \ref{fig:interrupts_are_shit} stellt die Messergebnisse des \ac{IR}s graphisch dar.
 \begin{figure}[H]
 	\centering
@@ -150,10 +150,11 @@ Abbildung \ref{fig:interrupts_are_shit} stellt die Messergebnisse des \ac{IR}s g
 	\caption{Messwerte des \ac{IR}s bei gleichzeitiger Messung eines \ac{IR}s und eines \ac{9-DOF}s}
 	\label{fig:interrupts_are_shit}
 \end{figure}
-Wie in Abbildung \ref{fig:interrupts_are_shit} zu erkennen ist, wurde das Propellerblatt nur unregelmäßig erkannt.
-Desweiteren wurden teilweise auch Spiztenwerte von 15V gemessen, welche aufgrund der Stromversorgung von maximal 5V nicht vorkommen können.
+Wie in Abbildung \ref{fig:interrupts_are_shit} zu erkennen ist, wird das Propellerblatt nur unregelmäßig erkannt.
+Des Weiteren werden teilweise auch Maximalwerte von 15V gemessen, welche aufgrund der Stromversorgung von maximal 5V nicht vorkommen können.
 
-Aus diesem Grund wurden die Sensoren auf die zwei Arudinos, \ac{A1} und \ac{A2} aufgeteilt (wie in Abbildung \ref{key} \todo{ref auf hardwaremodell bild setzen} dargestellt) und die Aufgaben entsprechend verteilt (wie in Abbildung \ref{fig:aufgaben-arduinos} dargestellt).
+Aus diesem Grund erfolgt eine Aufteilung der Sensoren auf die zwei Arduinos \ac{A1} und \ac{A2} wie in Abbildung \todo{ref auf hardwaremodell bild setzen} dargestellt. 
+Weiterhin erfolgt eine Aufgabenteilung, wie in Abbildung \ref{fig:aufgaben-arduinos} dargestellt.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{images/chapter/03/aufgaben-arduinos.png}
