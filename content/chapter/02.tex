@@ -18,12 +18,27 @@ Die Boards stellen eine serielle Schnittstelle, unter anderem auch \ac{USB} zur 
 Die Software für den Arduino wird in einer C, bzw. C++ ähnlichen Programmiersprache geschrieben.
 Für das Entwickeln des Programmes und das Programmiern des Mikrocontrollers wird von dem Hersteller eine Entwicklungsumgebung zur Verfügung gestellt, welche diese Aufgaben vereinfacht.
 
+\begin{lstlisting}[language=C, label=arduino_sample_code, title=Beispiel-Code eines Blinklichtes für den Arduino]
+int ledPin = 13;
+
+void setup() {
+    pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(ledPin, HIGH);
+    delay(1000);
+    digitalWrite(ledPin, LOW);
+    delay(1000);
+}
+\end{lstlisting}
+
 Ein erfolgreiches Konzept der Arduino-Plattform sind die sogenannten \textit{Shields}.
-Diese sind Zusatzleiterplatinen welche unkompliziert auf das Arduino-Board gesteckt werden und so die Funktionsvielfalt des Arduinos erweitert wird.
+Diese sind Zusatzleiterplatinen welche unkompliziert auf das Arduino-Board gesteckt werden und so die Funktionsvielfalt des Arduinos erweitern.
 Ein besonderes Merkmal hierbei ist die Möglichkeit, dass mehrere \textit{Shields} aufeinander gesteckt werden können um so platzsparend mehrere Zusatzleiterplatinen an ein einzelnes Arduino-Board anzuschließen.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=5cm]{images/chapter/02/arduino_shield.jpg}
-	\caption{Fotografie eines Arduino UNOs mit Shield}
+	\includegraphics[width=5cm]{images/chapter/02/arduino_shields.jpg}
+	\caption{Photografie eines Arduino UNOs mit zwei Shields}
 	\label{fig:arduino_shield}
 \end{figure}
