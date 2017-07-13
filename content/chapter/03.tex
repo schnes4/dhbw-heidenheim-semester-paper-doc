@@ -93,8 +93,12 @@ Der Lichtsensor hingegen integriert alle gemessenen Werte über einen zuvor defi
 	\item 500ms
 	\item 600ms
 \end{itemize}
-Ein Flugzeugmotor dreht im Leerlauf mit ca. 2500 U/s. Um ein valides Ergebnis zu erzielen, muss die minimale Abtastrate höher als die maximale Umdrehungszahl des Motors sein, um sicherzustellen, dass der schwarz markierte Bereich des Propellerblattes auch detektiert wurde.
+Ein Flugzeugmotor dreht im Leerlauf mit ca. 2500 U/min. Um ein valides Ergebnis zu erzielen, muss die minimale Abtastrate höher als die maximale Umdrehungszahl des Motors sein, um sicherzustellen, dass der schwarz markierte Bereich des Propellerblattes auch detektiert wurde.
 Umgerechnet bedeutet dies, dass der Propeller für eine Umdrehung ca. 24ms benötigt.
+\begin{equation}
+2500\;U/min \approx 42\;U/s \approx 1\;U/\,24\;ms
+\label{equation_revolutions}
+\end{equation}
 Da die geringste Abtastrate jedoch 100ms beträgt, ist der Lichtsensor für den Anwendugsfall dieser Studienarbeit ungeeignet.
 Aus diesem Grund wurde für die Umsetzung dieser Studienzeit auf den \ac{IR} als Sensor zur Detektion des Propellerblattes gesetzt.
 
