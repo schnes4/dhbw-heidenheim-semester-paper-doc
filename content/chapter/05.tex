@@ -1,3 +1,18 @@
 %!TEX root = ../../main.tex
 
 \chapter{Ausblick}
+Aufgrund der technischen Mängel und Probleme der Sensoren, welche in dieser Studienarbeit verwendet wurden, war es nicht möglich, das erhoffte Ergebnis der Arbeit zu erzielen.
+Im Folgenden werden deshalb Möglichkeiten und Empfehlungen aufgezeigt, die unterstützend für ein mögliches, weiterführendes Projekt sein sollen.
+
+Eine deutliche Empfehlung ist der Wechsel des, in dieser Studienarbeit eingesetzten, \ac{9-DOF} Sensor.
+Für dieses Experiment ist ein Beschleunigsungssensor notwendig, welcher mit einer höheren Taktrate arbeitet.
+Beispielsweise wurde hierfür der Bosch BMA180, der unter anderem Anwendung in Drohnen findet, näher untersucht.
+Dies ist ein dreiachsiger Beschleunigungssensor, welcher intern mit einer maximalen Messgeschwindigkeit von 1200 \ac{Hz} arbeiten kann.
+Der Sensor ist somit in der Lage, alle 417$\mu$s eine neue Messreihe zu liefern.
+Hiermit sind bei einer Umdrehungszeit von circa 24ms bis zu 48 Messergebnisse möglich, welche wahrscheinlich ausreichend sind für eine Aussage über die Unwuchtdetektion und -lokalisierung \cite{bosch_bma180}.
+
+Eine weitere Möglichkeit den Beschleunigungssensor zu ersetzen, ist eventuell der Einsatz einer inertialen Messeinheit (englisch \textit{inertial measurement unit}, IMU).
+Dies ist meist eine räumliche Kombination von mehreren Sensoren, welche auch Einsatz in heutigen Drohnen finden.
+Ob diese den, für die Studienarbeit benötigten, Verwendungszweck erfüllen ist nicht bekannt und müsste für ein weiterführendes Projekt erst genauer recherchiert werden.
+
+Des Weiteren sollte die Detektion des Propellerblattes verändert werden. Wie in Kapitel \ref{sec:detect_propeller} beschrieben, ist die Detektion des Propellers mit einigen Problemen verbunden. 
