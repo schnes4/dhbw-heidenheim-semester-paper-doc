@@ -194,7 +194,97 @@ Dieser ist mit 4 verschiedenen Sensoren ausgestattet:
 \end{itemize}
 
 \subsubsection*{Messung der Unwucht}
-Hier kommen dann Bilder rein und wir erklären und diskutieren die Ergebnisse dann, oder?
+- Verwendeter Sensor für die Unwuchtdetektion ist der Beschleunigungssensor, da damit Vibrationen gut erkennbar sind.
+- Erster Test der Unwuchtmessung um mögliche Muster zu erkennen:
+-- A2 liest Interrupt und startet Messung
+-- A2 misst weiter
+-- A2 liest Interrupt und stoppt Messung
+-- Dargestellt in Figure
+- Tabellarische Darstellung der Messergebnisse 
+-- aus den Whiteboard-Notes
+- Zwei Dinge sind erkennbar
+-- Maximalwert von 19.6 -> Deshalb erhöhung der Reichweite des Sensors, aber damit Verlust an Präzision
+-- Keine Konsistenz zwischen den einzelnen Messreihen
+--- Z-Wert ist beim 1. 0,66 -- beim 2. 3,9 -- beim 3. 3,4
+- ABER: eine Unwucht ist bereits detektierbar anhand der Messergebnisse
+- ABER: nicht lokalisierbar
+-- Siehe "Umdrehungen ohne Unwucht" mit Vergleich zu "Umdrehungen mit Unwucht"
+
+- Da Unwucht prinzipiell detektierbar kam folgender gedanke:
+-- wenn unterschied messbar zwischen:
+--- unwucht auf seite der schwarzen markierung
+--- unwucht auf seite ohne markierung
+-- dann ist unwucht auch lokalisierbar
+- Messungen durchgeführt:
+-- keine eindeutigen unterschiede der beiden unwuchten messbar
+-- es kommt noch schlimmer: messreihen untereinander nicht einheitlich (siehe oben)
+
+-> Unwucht nicht detektierbar mit diesem sensor
+
+Erste Tabelle: Umdrehung mit Unwucht
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllllllllllll}
+\textbf{Messung} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
+\hline
+1       & 7    & -17.49 & 0,83  & -0,60 & 7    & -14,92 & 1,27  & 0,83  & 8    & -18,98 & 0,88  & -1,78 \\
+2       & 16   & -19,60 & -5,30 & -0,28 & 16   & -19,60 & -5,29 & -0,25 & 17   & -19,6  & -4,68 & 0,71  \\
+3       & 25   & 19,60  & 4,02  & 19,60 & 25   & 19,60  & 2,24  & 19,60 & 25   & 19,60  & 2,72  & 19,60 \\
+4       & 33   & -17,21 & 0,95  & -0,66 & 34   & 4,18   & 2,66  & 3,90  & 34   & 0,63   & 2,32  & 3,40 
+\end{tabular}%
+}
+\caption{Messergebnisse von Propellerumdrehungen mit Unwucht}
+\label{tab:rounds_imbalance}
+\end{table}
+
+Zweite Tabelle: Umdrehung ohne Unwucht
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllllllllllll}
+\textbf{Messung} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
+\hline
+1       & 7    & 1,94  & 0,11  & 10,41 & 8    & 0,56  & -0,29 & 10,10 & 9    & 4,12  & 0,46  & 11,16 \\
+2       & 15   & 2,10  & 0,86  & 10,61 & 16   & -0,24 & 0,08  & 9,54  & 17   & -0,34 & 0,39  & 9,26  \\
+3       & 24   & -2,57 & -0,29 & 8,49  & 25   & -2,11 & -0,16 & 7,55  & 25   & 1,79  & -0,09 & 10,13
+\end{tabular}%
+}
+\caption{Messergebnisse von Propellerumdrehungen ohne Unwucht}
+\label{tab:rounds_balance}
+\end{table}
+
+Tabelle: Unwucht auf Seite mit Markierung
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllllllllllll}
+\textbf{Messung} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
+\hline
+1       & 3    & -1,95 & -2,94 & 9,76 & 7    & 27,69  & 0,88  & 22,27 & 11   & 26,13  & 4,14  & 19,55 \\
+2       & 3    & -6,73 & -3,49 & 8,09 & 7    & 21,46  & -0,05 & 19,15 & 11   & 25,16  & 3,60  & 19,27 \\
+3       & 3    & 0,44  & 2,35  & 8,12 & 7    & -20,35 & -0,27 & 0,47  & 11   & -20,78 & -2,42 & 1,55 
+\end{tabular}%
+}
+\caption{Messergebnisse mit Unwucht auf Seite mit Markierung}
+\label{tab:imbalance_same_side}
+\end{table}
+
+Tabelle: Unwucht auf Seite ohne Markierung
+\begin{table}[]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllllllllllll}
+\textbf{Messung} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
+\hline
+1       & 3    & 0,10  & -2,01 & 11,81 & 7    & 26,25 & 1,73 & 21,20 & 12   & 24,31 & 3,88 & 17,53 \\
+2       & 3    & -2,36 & -2,27 & 10,38 & 7    & 25,51 & 1,74 & 21,08 & 11   & 25,94 & 4,38 & 19,15 \\
+3       & 3    & -1,89 & -1,87 & 10,43 & 7    & 26,03 & 1,21 & 20,58 & 11   & 27,78 & 4,24 & 19,98
+\end{tabular}%
+}
+\caption{Messergebnisse mit Unwucht auf Seite ohne Markierung}
+\label{tab:imbalance_other_side}
+\end{table}
 
 \subsubsection*{Probleme bei der Detektion}
 Nachfolgende Probleme traten bei der Verwendung des Sensors auf:
