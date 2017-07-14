@@ -1,6 +1,6 @@
 # Messung und Analyse von Unwucht an Propeller getriebenen Flugzeugen
 
-Studienarbeit des Studiengangs Informatik an der Dualen Hochschule Baden-Württemberg Heidenheim von Andreas Kiessling und Stefan Schneider
+Studienarbeit des Studiengangs Informatik an der Dualen Hochschule Baden-Württemberg Heidenheim von Andreas Kiessling (@kiessla) und Stefan Schneider (@schnes4)
 
 ## Abstract
 
