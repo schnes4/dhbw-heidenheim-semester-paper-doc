@@ -1,0 +1,172 @@
+% !TeX root = ../main.tex
+
+\addchap{\appendixPhrase}
+
+\section{Arduino-Programmcode}
+\begin{lstlisting}[language=C, label={lst:arduino_selfmade_interrupts}, caption=Programm-Code zur Erstellung des Self-Made Interrupts]
+#define ITR_PIN 7
+#define IR_SENS 9
+
+unsigned long time;
+int falling = true;
+
+void setup() {
+  Serial.begin(38400);
+
+  pinMode(IR_SENS, INPUT);
+  pinMode(ITR_PIN, OUTPUT);
+
+  digitalWrite(ITR_PIN, LOW);
+}
+
+void loop() {
+  int sensor = digitalRead(IR_SENS);
+  
+  if (sensor == LOW) {
+    if (falling) {
+      digitalWrite(ITR_PIN, HIGH);
+      delay(5);
+      digitalWrite(ITR_PIN, LOW);
+
+      Serial.println(5);
+
+      falling = false;
+    }
+  }
+  else {
+    falling = true;
+  }
+
+  Serial.println(sensor);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C, label={lst:modified_twi_h}, caption=Modifizierte \emph{twi.h} um \ac{I2C} im \emph{Fast-Mode} zu betreiben]
+/*
+  twi.h - TWI/I2C library for Wiring & Arduino
+  Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
+#ifndef twi_h
+#define twi_h
+
+  #include <inttypes.h>
+
+  //#define ATMEGA8
+
+  #ifndef TWI_FREQ
+  #define TWI_FREQ 400000L
+  #endif
+
+  #ifndef TWI_BUFFER_LENGTH
+  #define TWI_BUFFER_LENGTH 32
+  #endif
+
+  #define TWI_READY 0
+  #define TWI_MRX   1
+  #define TWI_MTX   2
+  #define TWI_SRX   3
+  #define TWI_STX   4
+  
+  void twi_init(void);
+  void twi_disable(void);
+  void twi_setAddress(uint8_t);
+  void twi_setFrequency(uint32_t);
+  uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t, uint8_t);
+  uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t, uint8_t);
+  uint8_t twi_transmit(const uint8_t*, uint8_t);
+  void twi_attachSlaveRxEvent( void (*)(uint8_t*, int) );
+  void twi_attachSlaveTxEvent( void (*)(void) );
+  void twi_reply(uint8_t);
+  void twi_stop(void);
+  void twi_releaseBus(void);
+
+#endif
+\end{lstlisting}
+
+\section{Tabellen}
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\textbf{Zeit} & \textbf{X} & \textbf{Y } & \textbf{Z} \\
+\hline
+\hline
+3    & -1,95  & -2,94 & 9,76   \\
+7    & 27,69  & 0,88  & 22,27  \\
+11   & 26,13  & 4,14  & 19,553 \\
+\hline
+3    & -6,73  & -3,49 & 8,09   \\
+7    & 21,46  & -0,05 & 19,15  \\
+11   & 25,16  & 3,60  & 19,27  \\
+\hline
+3    & 0,44   & 2,35  & 8,12   \\
+7    & -20,35 & -0,27 & 0,47   \\
+11   & -20,78 & -2,42 & -1,55  \\
+\hline
+3    & 4,59   & 2,73  & 9,71   \\
+7    & -20,76 & -0,46 & -0,52  \\
+12   & -21,45 & -2,79 & 1,44   \\
+\hline
+3    & 4,62   & 2,93  & 9,65   \\
+8    & -21,45 & -0,21 & -0,11  \\
+12   & -22,96 & -2,91 & 0,88   \\
+\hline
+3    & 6,03   & 2,77  & 10,35  \\
+7    & -23,24 & -1,05 & -1,04  \\
+11   & -27,70 & -3,08 & -0,89 
+\end{tabular}
+\caption{Messergebnisse mit Unwucht auf Seite mit Markierung}
+\label{tab:imbalance_same_side-full}
+\end{table}
+
+\begin{table}[]
+\centering
+\begin{tabular}{llll}
+\textbf{Zeit} & \textbf{X} & \textbf{Y } & \textbf{Z} \\
+\hline
+\hline
+3    & 0,10   & -2,01 & 11,81 \\
+7    & 26,25  & 1,73  & 21,20 \\
+12   & 24,31  & 3,88  & 17,53 \\
+\hline
+3    & -2,36  & -2,27 & 10,38 \\
+7    & 25,51  & 1,74  & 21,08 \\
+11   & 25,94  & 4,38  & 19,15 \\
+\hline
+3    & -1,89  & -1,87 & 10,43 \\
+7    & 26,03  & 1,21  & 20,58 \\
+11   & 27,78  & 4,24  & 19,98 \\
+\hline
+3    & -5,55  & -2,66 & 9,02  \\
+7    & 22,63  & 0,74  & 19,80 \\
+11   & 26,87  & 3,93  & 19,75 \\
+\hline
+3    & 0,58   & -1,99 & 11,67 \\
+7    & 25,49  & 1,58  & 20,82 \\
+11   & 21,42  & 3,72  & 17,19 \\
+\hline
+3    & 0,77   & 2,34  & 7,68  \\
+8    & -16,56 & 0,75  & 2,26  \\
+12   & -22,17 & -2,20 & 1,08  \\
+\hline
+3    & 3,41   & 2,38  & 8,55  \\
+8    & -27,37 & -1,42 & -2,71 \\
+12   & -31,05 & -3,91 & -1,45
+\end{tabular}
+\caption{Messergebnisse mit Unwucht auf Seite ohne Markierung}
+\label{tab:imbalance_other_side-full}
+\end{table}
