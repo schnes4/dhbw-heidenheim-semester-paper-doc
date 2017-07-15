@@ -212,7 +212,8 @@ Sobald ein weiterer Interrupt an \ac{A2} gesendet wird, kann davon ausgegangen w
 Dieser erste Test soll zeigen, ob mögliche Muster in den Messwerten einer einzelnen Propellerumdrehung zu sehen sind.
 Verwendet wird hierfür ein Propeller, dessen Unwucht auf der gleichen Seite, wie die Markierung ist.
 
-Die aufgezeichneten Messwerte der einzelnen Messungen für diesen ersten Test, sind in zwei Tabellen dargestellt, welche jeweils drei Messergebnisse enthalten. Die Tabelle \ref{tab:rounds_balance} enthält die Messergebnisse für einen Propeller ohne eigens erstellte Unwucht.
+Die aufgezeichneten Messwerte der einzelnen Messungen für diesen ersten Test, sind in zwei Tabellen dargestellt, welche jeweils drei Messergebnisse enthalten.
+Tabelle \ref{tab:rounds_balance} enthält die Messergebnisse für einen Propeller ohne eigens erstellte Unwucht.
 
 \begin{table}[H]
 \centering
@@ -230,21 +231,21 @@ Die aufgezeichneten Messwerte der einzelnen Messungen für diesen ersten Test, s
 \end{table}
 
 Aus dieser Tabelle können mehrere Erkenntnisse gezogen werden.
-Zuerst ist erkennbar, dass pro Messung (Zeit, X, Y, Z) nur drei Messpunkte aus dem Beschleunigungssensor gelesen werden konnten.
-Außerdem weichen die Zeitpunkte um bis zu 2 \ac{ms} ab, an denen die Messergebnisse aus dem Sensor gelesen wurden.
+Zunächst ist erkennbar, dass pro Messung (Zeit, X, Y, Z) nur drei Messpunkte aus dem Beschleunigungssensor gelesen werden konnten.
+Außerdem weichen die Zeitpunkte um bis zu 2 \ac{ms} voneinander ab, an denen die Messergebnisse aus dem Sensor gelesen wurden.
 Dies entspricht, bei der eingestellten Drehzahl des Motors von 2500 U/min, einer Verschiebung des räumlichen Messpunktes um 30$\,^\circ$.
 Weiterhin sind Unstimmigkeiten zwischen den einzelnen Messreihen zu erkennen.
 Ein Beispiel hierfür ist zwischen den ersten Beiden und der letzten Messreihe zu sehen.
 Hierbei liegt der X-Wert der dritten Messung bei den ersten Beiden, trotz einer Zeitdifferenz von 1 \ac{ms}, bei ungefähr $2\;m/s^2$.
 Der X-Wert der dritten Messreihe hingegen, steht mit einem Wert von $1,79\;m/s^2$ im genauen Gegenteil dazu.
-Zuletzt ist erwähnenswert, dass der Wert 19,60 häufig in den Messungen vorkommt.
+Zuletzt fällt der Wert $19,60\;m/s^2$ häufig in den Messergebnissen auf.
 Dies liegt an der eingestellten Messweite des Beschleunigungssensors, welche standardmäßig bei der zweifachen Erdbeschleunigung liegt.
 Für die nachfolgenden Tests wurde diese auf die vierfache Erdbeschleunigung gesetzt.
-Diese Erhöhung der Reichweite ist jedoch eine Verminderung der Präzision des Sensors geschuldet \cite{lsm9ds1_manual}, die jedoch keinen erkennbare Einfluss auf die Messung hatte.
+Diese Erhöhung der Reichweite ist jedoch eine Verminderung der Präzision des Sensors geschuldet \cite{lsm9ds1_manual}, die jedoch keinen erkennbare Einfluss auf die Messung hat.
 
 In Tabelle \ref{tab:rounds_imbalance} sind die Messergebnisse für den ersten Test mit einem unwuchtbehafteten Propeller enthalten.
 Auffällig ist hierbei, die Existenz des vierten Messpunktes in allen drei Messreihen.
-Dies scheint der Unwucht verschuldet zu sein, welche den Propeller langsamer drehen lässt, als einen ohne.
+Dies scheint der Unwucht verschuldet zu sein, welche den Propeller langsamer drehen lässt, als ohne.
 Trotz einer zusätzlichen Messung, sind die gleichen Inkonsistenzen zwischen den einzelnen Messreihen zu erkennen, wie in der Beschreibung der Tabelle \ref{tab:rounds_balance} bereits erwähnt.
 
 \begin{table}[H]
@@ -268,7 +269,15 @@ Eine Unwuchtdetektion hingegen, ist bereits realisierbar.
 Zu erkennen ist dies an den zahlreichen Vorkommnissen von Maximalwerten in Tabelle \ref{tab:rounds_imbalance}, während die Tabelle \ref{tab:rounds_balance} hiervon keine enthält.
 
 Aufgrund der prinzipellen Möglichkeit, Unwucht detektieren zu können, wird ein neuer Test gestartet.
-Hierbei kommen zwei verschiedene Propeller zum Einsatz.
+Hierbei kommen zwei verschiedene Propeller zum Einsatz, die in Abbildung \ref{fig:test_two_propellers} betrachtet werden können.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{images/chapter/03/test_two_propellers.jpeg}
+	\caption{Verwendete Propeller für den zweiten Test}
+	\label{fig:test_two_propellers}
+\end{figure}
+
 Der erste Propeller besitzt eine Unwucht auf demselben Rotorblatt, an dem auch die Markierung existiert.
 Die Unwucht des zweiten Propellers hingegen, ist auf dem Rotorblatt angebracht, welche keine Markierung besitzt.
 Dieser Test soll zeigen, ob bestimmte charakteristische Messungwerte der jeweils eingesetzten Propeller zu sehen sind.
@@ -276,7 +285,7 @@ Bei einem erfolgreichen Testergebnis, kann aufgrund dieser ein Rückschluss auf 
 Damit ist die Aussage über eine Unwuchtlokalisierung möglich.
 
 Die Messergebnisse des zweiten Tests sind in Tabelle \ref{tab:imbalance_same_side} und in Tabelle \ref{tab:imbalance_other_side} auszugsweise dargestellt.
-Die kompletten Messreihen können in Anhang unter dem Punkt Tabellen \ref{tab:imbalance_same_side-full} und \ref{tab:imbalance_other_side-full} nachgelesen werden.
+Die kompletten Messreihen können in Anhang unter dem Punkt Tabellen \ref{tab:imbalance_same_side-full} und \ref{tab:imbalance_other_side-full} eingesehen werden.
 
 \begin{table}[H]
 \centering
