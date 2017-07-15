@@ -324,7 +324,19 @@ Aus den Messergebnissen dieses Versuchs, kann diese Vermutung jedoch nicht best�
 Es sind keinerlei charakteristische Messungen für die jeweiligen Propeller vorhanden, welche in allen Messreihen durchgehend vorkommen.
 
 \subsubsection*{Probleme bei der Detektion}
-Nachfolgende Probleme traten bei der Verwendung des Sensors auf:
-- Das Auslesen der Sensordaten dauert zu lange. Es ist möglich 2-3 Messergebnisse (Variation hängt von Gewicht des Propellers ab) innerhalb einer Umdrehung (~20ms) des Propellers zu erhalten. Ein Versuch dieses Verhalten zu verbessern bestand darin die Verbindungsgeschwindigkeit zwischen \textit{Arduino} und Sensor zu erhöhen. Die Verbindung zwischen den beiden Geräten findet über die Schnittstelle I\textsuperscript{2}C im normalen Modus statt. Durch Manipulation der \textit{twi.h}, eine Header-Datei der Arduino-Bibliothek \textit{Wire.h}, welcher die Verbindungsparameter für die I\textsuperscript{2}C-Schnittstelle steuert, war es möglich die Verbindung im Fast-Mode zu betreiben. Damit wurde die Anzahl an Messergebnisse pro Umdrehung von 2-3 auf 3-5 Messungen erhöht. Dies ist aber weiterhin zu wenig um eine konkrete Entscheidung über die Lokalisation der Unwucht treffen zu können.
-Es existiert eine weitere Möglichkeit den Sensor auf eine höhere Messrate zu bekommen, welche im Datenblatt jedoch nur sehr kurz und knapp erklärt ist. Hierbei ist es möglich das Gyroskop des Sensor abzuschalten und den Beschleunigungssensor mittels eines "Burst-Modus" (multiple reads) auszulesen. Den Sensor in diesen Modus zu setzen und auszulesen war allerdings aufgrund Mangel des technischen Verständnisses und der Datenblatterklärung nicht möglich.
-Es kann davon ausgegangen werden, dass die benötigte Zeit für die Messung der Sensoren bei dem eingesetzten Sensor schon intern zu lange dauert. Die Empfehlung (für zukünftige Projekte ?) liegt daher auf dem Einsatz von anderen Sensoren, welche für diesen Einsatzzweck besser geeignet sind.
+Zusammenfassend lassen sich die Probleme der Detektion und Lokalisierung der Unwucht auf folgenden Punkt vereinheitlichen:
+Das Auslesen der Messwerte des Beschleunigungssensors benötigt zu viel Zeit.
+Es ist lediglich möglich, drei bis vier Messungen pro Umdrehung (circa 24 \ac{ms}) des Propellers zu erhalten.
+Dadurch existieren nicht genügend Werte, welche für eine aussagekräftige Analyse notwendig sind.
+
+Ein Versuch dieses Problem zu lösen und damit die Messgeschwindigkeit des Sensors zu erhöhen, besteht darin, die Verbindungsgeschwindigkeit zwischen \ac{A2} und \ac{9-DOF} zu erhöhen.
+Die Verbindung zwischen den beiden Geräten findet im normalen Modus über die Schnittstelle \ac{I2C} statt.
+Durch Manipulation der \emph{twi.h}, eine Header-Datei der Arduino-Bibliothek \emph{Wire.h}, welche die Verbindungsparameter für die \ac{I2C}-Schnittstelle steuert, ist es möglich die Verbindung im \emph{Fast-Mode} zu betreiben.
+Hierfür wird die Definition \emph{TWI\_FREQ} von ihrem ursprünglichen Wert \emph{100000L} auf \emph{400000L} erhöht. Der gesamte Quellcode, inklusive der beschriebenen Modifikation ist im Anhang \ref{lst:modified_twi_h} zu finden.
+Damit wird die Anzahl an Messergebnissen pro Umdrehung von drei bis vier, auf drei bis fünf Messungen erhöht.
+Dies ist aber weiterhin zu wenig um eine konkrete Entscheidung über die Lokalisation der Unwucht treffen zu können.
+
+Eine weitere Möglichkeit die Messrate des Sensors zu erhöhen, besteht darin, das Gyroskop des Sensor abzuschalten und den Beschleunigungssensor mittels eines \emph{Burst-Modus} auszulesen \cite{lsm9ds1_manual}.
+Den Sensor in diesen Modus zu setzen und auszulesen war allerdings aufgrund Mangel des technischen Verständnisses und der unzureichenden Datenblatterklärung nicht möglich.
+
+Es kann davon ausgegangen werden, dass die benötigte Zeit für die Messung der Sensoren bei dem eingesetzten \ac{9-DOF} bereits intern zu lange dauert und deshalb für diesen Einsatzzweck ungeignet sind.
