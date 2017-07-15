@@ -5,10 +5,59 @@
 \section{Versuchsaufbau}
 
 \subsection{Motorenmodell}
+Um die Unwuchtdetektion möglichst realistisch nachstellen zu können, wird ein Modell eines Flugzeugmotors benötigt.
+Dieses ist aus Holz und in Handarbeit speziell für diese Studiearbeit gefertig.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth]{images/chapter/03/motorenmodell.jpg}
+	\caption{Modell eines Flugzeugmotors}
+\end{figure}
+Das Modell besteht aus einer Grundplatte, welche mit Gummifüsen ausgestattet ist um mögliche Vibrationen durch den Untergrund abzufedern, zwei Federungsmasten sowei einem Federungshaken und einem Motorenblock mit Sensorenarm.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth]{images/chapter/03/motorblock_mit_sensor.jpg}
+	\caption{Motorblock mit Sensorenarm}
+	\label{fig:motorblock_mit_sensorenarm}
+\end{figure}
+Wie in Abbildung \ref{fig:motorblock_mit_sensorenarm} dargestellt, besteht der Motorenblock aus einem Holzklotz, an welchem der verwendete Drohnenmotor, sowie ein Sensorarm für die Detektion des Propellerblattes befestigt ist.
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=7.5cm]{images/chapter/03/motorblock_top.jpg}
+	\caption{Motorblock mit \ac{9-DOF} Sensor}
+	\label{fig:motorblock_top}
+\end{figure}
+Abbildung \ref{fig:motorblock_top} zeigt den Motorblock von oben.
+Hier ist der \ac{9-DOF} Sensor angeschlossen, welcher für die Unwuchtmessung zuständig ist.
+
+Ein Propellergetriebener Flugzeugmotor ist prinzipiell fest mit dem Flugzeugrumpf verbunden.
+Da dies unangenehme Vibrationen und eine hohe Belastung des Flugzeugrumpfes mitsich bringt, werden diese durch Gummipuffer gefedert.
+Um diese Funktion im Modell nachstellen zu können, wird der Motorenblock wie in Abbildung \ref{fig:motorblock_federung} darftestellt, mithilfe von Gummiebändern sowie der beiden Federungsmasten bzw. des Federungshaken gefedert.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth]{images/chapter/03/motorblock_federung.jpg}
+	\caption{Federung des Motorenblocks durch Gummibänder}
+	\label{fig:motorblock_federung}
+\end{figure}
 
 \subsection{Hardwaremodell}
 \label{subsec:hardwaremodell}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth]{images/chapter/03/hardware-layout.png}
+	\caption{Hardwareansteuerung des Motors sowie der Sensoren (schematische Darstellung)}
+	\label{fig:hardwaremodel_schema}
+\end{figure}
+Wie in Abbildung \ref{fig:hardwaremodel_schema} und Abbildung \ref{fig:hardwaremodel_real} dargestellt, ist sowohl der Drohnenmotor selbst als auch der \ac{9-DOF} Sensor gemeinsam an einem Arduino angeschlossen.
+Der für die Propellerdetektion zuständige \ac{IR} ist an einen eigenen Arduino angeschlossen.
+Um Interrupts zwischen beiden Arduinos senden zu könenn sind diese miteinander verbunden.
+Alle verwendeten Komponenten teilen sich die selbe Stromquelle.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth]{images/chapter/03/exp_arduino_sensors.jpg}
+	\caption{Hardwareansteuerung des Motors sowie der Sensoren (reale Darstellung)}
+	\label{fig:hardwaremodel_real}
+\end{figure}
 \section{Technische Umsetzung}
 
 \subsection{Detektion des Propellerblattes}
@@ -145,7 +194,7 @@ Abbildung \ref{fig:interrupts_are_shit} stellt die Messergebnisse des \ac{IR}s g
 Wie in Abbildung \ref{fig:interrupts_are_shit} zu erkennen ist, wird das Propellerblatt nur unregelmäßig erkannt.
 Des Weiteren werden teilweise 3 Interrupts durch die \ac{ISR} erkannt.
 
-Aus diesem Grund erfolgt eine Aufteilung der Sensoren auf die zwei Arduinos \ac{A1} und \ac{A2} wie in Abbildung \todo{ref auf hardwaremodell bild setzen} dargestellt. 
+Aus diesem Grund erfolgt eine Aufteilung der Sensoren auf die zwei Arduinos \ac{A1} und \ac{A2} wie in Abbildung \ref{fig:hardwaremodel_schema} dargestellt. 
 Weiterhin erfolgt eine Aufgabenteilung, wie in Abbildung \ref{fig:aufgaben-arduinos} dargestellt.
 \begin{figure}[H]
 	\centering
