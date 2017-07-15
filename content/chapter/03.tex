@@ -179,6 +179,7 @@ Zur Erzeugung einer Unwucht, werden wie in Abbildung \ref{fig:propeller-mit-unwu
 \end{figure}
 
 \subsubsection*{Sensortechnologie}
+\label{subsec:unwucht_sensor}
 Als 3-Achsen-Sensor soll der LSM9DS1 9-DOF Sensor von Adafruit eingesetzt werden.
 \begin{figure}[H]
 	\centering
@@ -194,51 +195,25 @@ Dieser ist mit 4 verschiedenen Sensoren ausgestattet:
 \end{itemize}
 
 \subsubsection*{Messung der Unwucht}
-- Verwendeter Sensor für die Unwuchtdetektion ist der Beschleunigungssensor, da damit Vibrationen gut erkennbar sind.
-- Erster Test der Unwuchtmessung um mögliche Muster zu erkennen:
--- A2 liest Interrupt und startet Messung
--- A2 misst weiter
--- A2 liest Interrupt und stoppt Messung
--- Dargestellt in Figure
-- Tabellarische Darstellung der Messergebnisse 
--- aus den Whiteboard-Notes
-- Zwei Dinge sind erkennbar
--- Maximalwert von 19.6 -> Deshalb erhöhung der Reichweite des Sensors, aber damit Verlust an Präzision
--- Keine Konsistenz zwischen den einzelnen Messreihen
---- Z-Wert ist beim 1. 0,66 -- beim 2. 3,9 -- beim 3. 3,4
-- ABER: eine Unwucht ist bereits detektierbar anhand der Messergebnisse
-- ABER: nicht lokalisierbar
--- Siehe "Umdrehungen ohne Unwucht" mit Vergleich zu "Umdrehungen mit Unwucht"
+Wie bereits unter dem vorherigen Punkt beschrieben, existieren verschiedene Sensoren auf dem \ac{9-DOF}.
+Für die Messung der Unwucht wird zunächst allerdings nur der Beschleunigungssensor eingesetzt.
+Die von ihm gelieferten Werte zeigen am deutlichsten eine Verschiebung des Motorblockes, aufgrund von Vibrationen, an.
 
-- Da Unwucht prinzipiell detektierbar kam folgender gedanke:
--- wenn unterschied messbar zwischen:
---- unwucht auf seite der schwarzen markierung
---- unwucht auf seite ohne markierung
--- dann ist unwucht auch lokalisierbar
-- Messungen durchgeführt:
--- keine eindeutigen unterschiede der beiden unwuchten messbar
--- es kommt noch schlimmer: messreihen untereinander nicht einheitlich (siehe oben)
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=8cm]{images/chapter/03/measurement_arduino_a2.png}
+	\caption{Ablaufdiagramm für die Unwuchtmessung am \ac{A2}}
+	\label{fig:sequence_measure_a2}
+\end{figure}
 
--> Unwucht nicht detektierbar mit diesem sensor
+Für die erste Messreihenermittlung wurde das Programm von \ac{A2} auf den Ablauf programmiert, wie in Abbildung \ref{fig:sequence_measure_a2} dargestellt.
+Hierbei wartet \ac{A2} auf einen Interrupt von \ac{A1} um mit der Unwuchtmessung zu beginnen.
+Sobald ein weiterer Interrupt an \ac{A2} gesendet wird, kann davon ausgegangen werden, dass der Propeller eine vollständige Umdrehung absolviert hat und die Unwuchtmessung abgeschlossen werden kann.
+Dieser erste Test soll zeigen, ob mögliche Muster in den Messwerten einer einzelnen Propellerumdrehung zu sehen sind.
+Verwendet wird hierfür ein Propeller, dessen Unwucht auf der gleichen Seite, wie die Markierung ist.
 
-Erste Tabelle: Umdrehung mit Unwucht
-\begin{table}[H]
-\centering
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lllllllllllll}
-\textbf{Messung} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
-\hline
-1       & 7    & -17.49 & 0,83  & -0,60 & 7    & -14,92 & 1,27  & 0,83  & 8    & -18,98 & 0,88  & -1,78 \\
-2       & 16   & -19,60 & -5,30 & -0,28 & 16   & -19,60 & -5,29 & -0,25 & 17   & -19,6  & -4,68 & 0,71  \\
-3       & 25   & 19,60  & 4,02  & 19,60 & 25   & 19,60  & 2,24  & 19,60 & 25   & 19,60  & 2,72  & 19,60 \\
-4       & 33   & -17,21 & 0,95  & -0,66 & 34   & 4,18   & 2,66  & 3,90  & 34   & 0,63   & 2,32  & 3,40 
-\end{tabular}%
-}
-\caption{Messergebnisse von Propellerumdrehungen mit Unwucht}
-\label{tab:rounds_imbalance}
-\end{table}
+Die aufgezeichneten Messwerte der einzelnen Messungen für diesen ersten Test, sind in zwei Tabellen dargestellt, welche jeweils drei Messergebnisse enthalten. Die Tabelle \ref{tab:rounds_balance} enthält die Messergebnisse für einen Propeller ohne eigens erstellte Unwucht.
 
-Zweite Tabelle: Umdrehung ohne Unwucht
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -254,7 +229,55 @@ Zweite Tabelle: Umdrehung ohne Unwucht
 \label{tab:rounds_balance}
 \end{table}
 
-Tabelle: Unwucht auf Seite mit Markierung
+Aus dieser Tabelle können mehrere Erkenntnisse gezogen werden.
+Zuerst ist erkennbar, dass pro Messung (Zeit, X, Y, Z) nur drei Messpunkte aus dem Beschleunigungssensor gelesen werden konnten.
+Außerdem weichen die Zeitpunkte um bis zu 2 \ac{ms} ab, an denen die Messergebnisse aus dem Sensor gelesen wurden.
+Dies entspricht, bei der eingestellten Drehzahl des Motors von 2500 U/min, einer Verschiebung des räumlichen Messpunktes um 30$\,^\circ$.
+Weiterhin sind Unstimmigkeiten zwischen den einzelnen Messreihen zu erkennen.
+Ein Beispiel hierfür ist zwischen den ersten Beiden und der letzten Messreihe zu sehen.
+Hierbei liegt der X-Wert der dritten Messung bei den ersten Beiden, trotz einer Zeitdifferenz von 1 \ac{ms}, bei ungefähr $2\;m/s^2$.
+Der X-Wert der dritten Messreihe hingegen, steht mit einem Wert von $1,79\;m/s^2$ im genauen Gegenteil dazu.
+Zuletzt ist erwähnenswert, dass der Wert 19,60 häufig in den Messungen vorkommt.
+Dies liegt an der eingestellten Messweite des Beschleunigungssensors, welche standardmäßig bei der zweifachen Erdbeschleunigung liegt.
+Für die nachfolgenden Tests wurde diese auf die vierfache Erdbeschleunigung gesetzt.
+Diese Erhöhung der Reichweite ist jedoch eine Verminderung der Präzision des Sensors geschuldet \cite{lsm9ds1_manual}, die jedoch keinen erkennbare Einfluss auf die Messung hatte.
+
+In Tabelle \ref{tab:rounds_imbalance} sind die Messergebnisse für den ersten Test mit einem unwuchtbehafteten Propeller enthalten.
+Auffällig ist hierbei, die Existenz des vierten Messpunktes in allen drei Messreihen.
+Dies scheint der Unwucht verschuldet zu sein, welche den Propeller langsamer drehen lässt, als einen ohne.
+Trotz einer zusätzlichen Messung, sind die gleichen Inkonsistenzen zwischen den einzelnen Messreihen zu erkennen, wie in der Beschreibung der Tabelle \ref{tab:rounds_balance} bereits erwähnt.
+
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllllllllllll}
+\textbf{Messung} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} & \textbf{Zeit} & \textbf{X} & \textbf{Y} & \textbf{Z} \\
+\hline
+1       & 7    & -17.49 & 0,83  & -0,60 & 7    & -14,92 & 1,27  & 0,83  & 8    & -18,98 & 0,88  & -1,78 \\
+2       & 16   & -19,60 & -5,30 & -0,28 & 16   & -19,60 & -5,29 & -0,25 & 17   & -19,60  & -4,68 & 0,71  \\
+3       & 25   & 19,60  & 4,02  & 19,60 & 25   & 19,60  & 2,24  & 19,60 & 25   & 19,60  & 2,72  & 19,60 \\
+4       & 33   & -17,21 & 0,95  & -0,66 & 34   & 4,18   & 2,66  & 3,90  & 34   & 0,63   & 2,32  & 3,40 
+\end{tabular}%
+}
+\caption{Messergebnisse von Propellerumdrehungen mit Unwucht}
+\label{tab:rounds_imbalance}
+\end{table}
+
+Als Fazit des ersten Versuchs kann gezogen werden, dass eine Unwuchtlokalisierung an den Propellern aufgrund der teils großen Unstimmigkeiten zwischen den Messreihen mit diesem Vorgehen nicht möglich ist.
+Eine Unwuchtdetektion hingegen, ist bereits realisierbar.
+Zu erkennen ist dies an den zahlreichen Vorkommnissen von Maximalwerten in Tabelle \ref{tab:rounds_imbalance}, während die Tabelle \ref{tab:rounds_balance} hiervon keine enthält.
+
+Aufgrund der prinzipellen Möglichkeit, Unwucht detektieren zu können, wird ein neuer Test gestartet.
+Hierbei kommen zwei verschiedene Propeller zum Einsatz.
+Der erste Propeller besitzt eine Unwucht auf demselben Rotorblatt, an dem auch die Markierung existiert.
+Die Unwucht des zweiten Propellers hingegen, ist auf dem Rotorblatt angebracht, welche keine Markierung besitzt.
+Dieser Test soll zeigen, ob bestimmte charakteristische Messungwerte der jeweils eingesetzten Propeller zu sehen sind.
+Bei einem erfolgreichen Testergebnis, kann aufgrund dieser ein Rückschluss auf den eingesetzten Propeller geschlossen werden.
+Damit ist die Aussage über eine Unwuchtlokalisierung möglich.
+
+Die Messergebnisse des zweiten Tests sind in Tabelle \ref{tab:imbalance_same_side} und in Tabelle \ref{tab:imbalance_other_side} auszugsweise dargestellt.
+Die kompletten Messreihen können in Anhang unter dem Punkt Tabellen \ref{tab:imbalance_same_side-full} und \ref{tab:imbalance_other_side-full} nachgelesen werden.
+
 \begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -270,8 +293,7 @@ Tabelle: Unwucht auf Seite mit Markierung
 \label{tab:imbalance_same_side}
 \end{table}
 
-Tabelle: Unwucht auf Seite ohne Markierung
-\begin{table}[]
+\begin{table}[H]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lllllllllllll}
@@ -285,6 +307,11 @@ Tabelle: Unwucht auf Seite ohne Markierung
 \caption{Messergebnisse mit Unwucht auf Seite ohne Markierung}
 \label{tab:imbalance_other_side}
 \end{table}
+
+Die theoretische Vermutung ist, dass der Z-Wert sich bei den verschiedenen Propellerarten, jeweils entgegengesetzt verhält.
+Dies ist begründet durch die Annahme, dass die Unwucht eine Auslenkung dieser Achse bewirkt, welche sich direkt Proportional mit der Lokalisation der Unwucht verhält.
+Aus den Messergebnissen dieses Versuchs, kann diese Vermutung jedoch nicht bestätigt werden.
+Es sind keinerlei charakteristische Messungen für die jeweiligen Propeller vorhanden, welche in allen Messreihen durchgehend vorkommen.
 
 \subsubsection*{Probleme bei der Detektion}
 Nachfolgende Probleme traten bei der Verwendung des Sensors auf:
